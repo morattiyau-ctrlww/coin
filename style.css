@@ -74,11 +74,38 @@ h1 {
 }
 
 .coin-face {
-    font-size: 1.2rem;
-    font-weight: bold;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
     color: #8b4513;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    font-weight: bold;
+    border: 3px solid #8b4513;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.heads-symbol {
+    position: relative;
+}
+
+.heads-symbol::before {
+    content: "👑";
+    font-size: 2.5rem;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
+.tails-symbol {
+    position: relative;
+}
+
+.tails-symbol::before {
+    content: "⚡";
+    font-size: 2.5rem;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
 }
 
 .flip-button {
