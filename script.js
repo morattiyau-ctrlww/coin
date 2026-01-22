@@ -43,10 +43,8 @@ class CoinFlip {
     }
     
     addToHistory(result) {
-        const timestamp = new Date().toLocaleTimeString();
         const flipResult = {
-            result: result,
-            time: timestamp
+            result: result
         };
         
         // Add to beginning of array
@@ -77,7 +75,7 @@ class CoinFlip {
         
         this.history.forEach((flip, index) => {
             const listItem = document.createElement('li');
-            listItem.textContent = `${index + 1}. ${flip.result.toUpperCase()} - ${flip.time}`;
+            listItem.textContent = `${index + 1}. ${flip.result.toUpperCase()}`;
             listItem.classList.add(flip.result);
             this.historyList.appendChild(listItem);
         });

@@ -70,7 +70,7 @@ h1 {
 
 .tails {
     background: radial-gradient(circle at 30% 30%, #ffd700, #daa520, #b8860b);
-    transform: rotateY(180deg);
+    transform: rotateY(180deg) scaleX(-1);
 }
 
 .coin-face {
