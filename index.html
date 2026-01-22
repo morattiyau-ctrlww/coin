@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Gold Coin Flip</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gold Coin Flip</h1>
+        
+        <div class="coin-container">
+            <div class="coin" id="coin">
+                <div class="coin-side heads">
+                    <div class="coin-face">HEADS</div>
+                </div>
+                <div class="coin-side tails">
+                    <div class="coin-face">TAILS</div>
+                </div>
+            </div>
+        </div>
+        
+        <button id="flipBtn" class="flip-button">Flip Coin</button>
+        
+        <div class="history-section">
+            <h2>Last 5 Flips</h2>
+            <ul id="history" class="history-list"></ul>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
