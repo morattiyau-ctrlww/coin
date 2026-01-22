@@ -24,8 +24,8 @@ class CoinFlip {
         // Random result
         const result = Math.random() < 0.5 ? 'heads' : 'tails';
         
-        // Remove any existing animation classes
-        this.coin.classList.remove('flipping-heads', 'flipping-tails');
+        // Remove any existing animation and result classes
+        this.coin.classList.remove('flipping-heads', 'flipping-tails', 'result-heads', 'result-tails');
         
         // Add appropriate animation class
         setTimeout(() => {
@@ -35,6 +35,7 @@ class CoinFlip {
         // Handle animation end
         setTimeout(() => {
             this.coin.classList.remove('flipping-heads', 'flipping-tails');
+            this.coin.classList.add(`result-${result}`);
             this.addToHistory(result);
             this.isFlipping = false;
             this.flipBtn.disabled = false;
@@ -76,7 +77,7 @@ class CoinFlip {
         
         this.history.forEach((flip, index) => {
             const listItem = document.createElement('li');
-            listItem.textContent = `${flip.result.toUpperCase()} - ${flip.time}`;
+            listItem.textContent = `${index + 1}. ${flip.result.toUpperCase()} - ${flip.time}`;
             listItem.classList.add(flip.result);
             this.historyList.appendChild(listItem);
         });

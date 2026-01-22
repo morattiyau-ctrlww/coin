@@ -159,10 +159,20 @@ h1 {
 
 .coin.flipping-heads {
     animation: flipHeads 2s ease-out;
+    animation-fill-mode: forwards;
 }
 
 .coin.flipping-tails {
     animation: flipTails 2s ease-out;
+    animation-fill-mode: forwards;
+}
+
+.coin.result-heads {
+    transform: rotateY(0deg);
+}
+
+.coin.result-tails {
+    transform: rotateY(180deg);
 }
 
 .empty-history {
