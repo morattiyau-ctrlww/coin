@@ -2,33 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Gold Coin Flip</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="A real WebGL gold coin — milled edge, struck relief, lit by a studio environment, and thrown so it genuinely lands on the side it was asked to.">
+    <meta name="theme-color" content="#05070a">
+    <title>Gold Coin Flip — a real 3D coin</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <!-- the WebGL canvas is injected here; the 2D canvas is the fallback -->
+    <div id="stage" aria-hidden="true"></div>
+    <canvas id="coin2d" aria-hidden="true"></canvas>
+
+    <header class="masthead">
         <h1>Gold Coin Flip</h1>
-        
-        <div class="coin-container">
-            <div class="coin" id="coin">
-                <div class="coin-side heads">
-                    <div class="coin-face heads-symbol"></div>
-                </div>
-                <div class="coin-side tails">
-                    <div class="coin-face tails-symbol"></div>
-                </div>
-            </div>
+        <p class="tag">Crown or bolt &middot; milled edge, struck relief, thrown for real</p>
+    </header>
+
+    <div id="verdict" class="verdict" role="status" aria-live="polite"></div>
+
+    <div class="panel">
+        <div class="row tally">
+            <div class="stat"><b id="stTotal">0</b><i>flips</i></div>
+            <div class="stat"><b id="stHeads">0</b><i>crown</i></div>
+            <div class="stat"><b id="stTails">0</b><i>bolt</i></div>
+            <div class="stat"><b id="stStreak">0</b><i>streak</i></div>
+            <div class="stat"><b id="stBest">0</b><i>best</i></div>
         </div>
-        
-        <button id="flipBtn" class="flip-button">Flip Coin</button>
-        
-        <div class="history-section">
-            <h2>Last 5 Flips</h2>
-            <ul id="history" class="history-list"></ul>
+
+        <div class="split" role="img" id="splitBar" aria-label="Share of crown results">
+            <div class="split-fill" id="barHeads"></div>
+            <div class="split-mark"></div>
         </div>
+        <div class="split-cap">
+            <span id="capHeads">crown 50%</span>
+            <span id="capTails">bolt 50%</span>
+        </div>
+
+        <ol class="chips" id="history" aria-label="Last five flips"></ol>
+
+        <div class="row controls">
+            <button id="flipBtn" class="primary" type="button">
+                Flip the coin <kbd>space</kbd>
+            </button>
+            <button id="soundBtn" class="ghost" type="button" aria-pressed="true">
+                Sound on
+            </button>
+        </div>
+        <p class="note" id="note">Tap or press space to throw.</p>
     </div>
-    
+
+    <div id="probe" hidden></div>
+
+    <script src="world.js"></script>
+    <script src="renderer3d.js"></script>
+    <script src="renderer2d.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
