@@ -55,10 +55,16 @@ var WORLD = (function(){
      the WebGL relief, the flat fallback and the tests. No text anywhere: the
      emblems are the identity.                                             */
   var CROWN = [
-    [-0.50, -0.46], [ 0.50, -0.46], [ 0.50, -0.29],
-    [ 0.36, -0.29], [ 0.30,  0.34], [ 0.16, -0.06],
-    [ 0.00,  0.46], [-0.16, -0.06], [-0.30,  0.34],
-    [-0.36, -0.29], [-0.50, -0.29]
+    /* Bauhinia: five rounded petals around a small centre, traced as one
+       closed loop counter-clockwise so it extrudes facing outward. Stylised
+       in the spirit of the $5, not a copy of the mint artwork. */
+    [ 0.00,  0.62], [-0.14,  0.50], [-0.20,  0.34], [-0.14,  0.22],
+    [-0.34,  0.30], [-0.50,  0.22], [-0.56,  0.06], [-0.46, -0.06],
+    [-0.30, -0.04], [-0.22, -0.16], [-0.30, -0.34], [-0.20, -0.50],
+    [-0.04, -0.54], [ 0.06, -0.42], [ 0.06, -0.26], [ 0.18, -0.20],
+    [ 0.34, -0.30], [ 0.50, -0.22], [ 0.56, -0.06], [ 0.46,  0.06],
+    [ 0.30,  0.04], [ 0.22,  0.16], [ 0.30,  0.34], [ 0.20,  0.50],
+    [ 0.04,  0.54], [ 0.00,  0.62]
   ];
   var BOLT = [
     /* junk boat as a single closed outline: a hull, with two battened sails
