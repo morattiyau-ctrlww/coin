@@ -56,15 +56,17 @@ var WORLD = (function(){
      emblems are the identity.                                             */
   var CROWN = [
     /* Bauhinia: five rounded petals around a small centre, traced as one
-       closed loop counter-clockwise so it extrudes facing outward. Stylised
-       in the spirit of the $5, not a copy of the mint artwork. */
-    [ 0.00,  0.62], [-0.14,  0.50], [-0.20,  0.34], [-0.14,  0.22],
-    [-0.34,  0.30], [-0.50,  0.22], [-0.56,  0.06], [-0.46, -0.06],
-    [-0.30, -0.04], [-0.22, -0.16], [-0.30, -0.34], [-0.20, -0.50],
-    [-0.04, -0.54], [ 0.06, -0.42], [ 0.06, -0.26], [ 0.18, -0.20],
-    [ 0.34, -0.30], [ 0.50, -0.22], [ 0.56, -0.06], [ 0.46,  0.06],
-    [ 0.30,  0.04], [ 0.22,  0.16], [ 0.30,  0.34], [ 0.20,  0.50],
-    [ 0.04,  0.54], [ 0.00,  0.62]
+       closed loop counter-clockwise so it extrudes facing outward. Each petal
+       is a lobe and each valley sits on a circle of radius 0.20, so no petal
+       can reach across its neighbour and the outline never crosses itself.
+       Stylised in the spirit of the $5, not a copy of the mint artwork. */
+    [ 0.00,  0.60], [-0.13,  0.52], [-0.19,  0.38], [-0.12,  0.24],
+    [-0.20,  0.20], [-0.38,  0.28], [-0.52,  0.20], [-0.57,  0.06],
+    [-0.48, -0.06], [-0.32, -0.06], [-0.20, -0.20], [-0.28, -0.38],
+    [-0.20, -0.52], [-0.06, -0.57], [ 0.06, -0.48], [ 0.06, -0.32],
+    [ 0.20, -0.20], [ 0.38, -0.28], [ 0.52, -0.20], [ 0.57, -0.06],
+    [ 0.48,  0.06], [ 0.32,  0.06], [ 0.20,  0.20], [ 0.28,  0.38],
+    [ 0.20,  0.52], [ 0.06,  0.57], [ 0.00,  0.60]
   ];
   var BOLT = [
     /* junk boat as a single closed outline: a hull, with two battened sails
