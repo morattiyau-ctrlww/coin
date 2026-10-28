@@ -61,8 +61,13 @@ var WORLD = (function(){
     [-0.36, -0.29], [-0.50, -0.29]
   ];
   var BOLT = [
-    [ 0.14,  0.62], [-0.40,  0.02], [-0.06,  0.02],
-    [-0.26, -0.64], [ 0.36,  0.06], [ 0.02,  0.06]
+    /* junk boat as a single closed outline: a hull, with two battened sails
+       rising from its deck. One loop, so it extrudes cleanly and the
+       self-intersection test still means something. */
+    [-0.56, -0.30], [-0.30, -0.30], [-0.30,  0.34], [-0.06,  0.34],
+    [-0.06, -0.30], [ 0.06, -0.30], [ 0.06,  0.50], [ 0.34,  0.50],
+    [ 0.34, -0.30], [ 0.56, -0.30], [ 0.44, -0.46], [-0.44, -0.46],
+    [-0.56, -0.30]
   ];
 
   /* ---------------- geometry helpers ---------------- */
