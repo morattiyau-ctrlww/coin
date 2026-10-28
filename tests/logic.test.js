@@ -222,6 +222,10 @@ section('8. the coin itself is a coin');
   ok(area(W.CROWN) > 0 && area(W.BOLT) > 0,
      'both wind counter-clockwise, so they extrude facing outward',
      area(W.CROWN).toFixed(3) + ', ' + area(W.BOLT).toFixed(3));
+  /* the $5's emblems: a five-petal flower and a junk boat, both single loops */
+  ok(W.CROWN.length >= 20, 'the flower has enough points to read as petals',
+     W.CROWN.length);
+  ok(W.BOLT.length >= 10, 'the junk has a hull and two sails', W.BOLT.length);
 }
 
 section('9. the rules are fair, and provably so');
