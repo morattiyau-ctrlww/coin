@@ -63,21 +63,21 @@ var WORLD = (function(){
     [-0.36, -0.29], [-0.50, -0.29]
   ];
   var BOLT = [
-    /* The numeral "10", as struck on the HK $10 coin. Two glyphs joined by a
-       thin bridge along the baseline so the whole thing is one closed loop:
-       the bridge is invisible at coin scale, and it keeps the outline simple
-       and counter-clockwise for the tests and the extruder. */
+    /* The numeral "10", as struck on the HK $10 coin. One closed loop,
+       counter-clockwise, so it extrudes cleanly and the self-intersection
+       test still means something. The "0" is a solid rounded blob with a
+       notch cut in from the top: a true ring needs a hole, and a hole needs
+       a second loop, which this single-path model cannot express. */
     /* the "1": a stem with a flag, and a foot */
     [-0.46, -0.50], [-0.30, -0.50], [-0.30,  0.34], [-0.16,  0.46],
     [-0.16,  0.56], [-0.46,  0.56], [-0.46,  0.46], [-0.40,  0.46],
     [-0.40, -0.40], [-0.46, -0.40], [-0.46, -0.50],
-    /* the bridge along the baseline */
+    /* the bridge along the baseline, joining the two glyphs */
     [-0.30, -0.50], [ 0.10, -0.50],
-    /* the "0": an outer ring and an inner ring, joined at the top */
-    [ 0.10, -0.50], [ 0.10,  0.56], [ 0.50,  0.56], [ 0.50, -0.50],
-    [ 0.10, -0.50],
-    [ 0.22, -0.38], [ 0.38, -0.38], [ 0.38,  0.44], [ 0.22,  0.44],
-    [ 0.22, -0.38]
+    /* the "0": a rounded blob, with a notch cut down from the top */
+    [ 0.10, -0.50], [ 0.10,  0.56], [ 0.24,  0.56], [ 0.24,  0.30],
+    [ 0.36,  0.30], [ 0.36,  0.56], [ 0.50,  0.56], [ 0.50, -0.50],
+    [ 0.10, -0.50]
   ];
 
   /* ---------------- geometry helpers ---------------- */
