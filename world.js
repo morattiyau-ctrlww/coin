@@ -55,27 +55,29 @@ var WORLD = (function(){
      the WebGL relief, the flat fallback and the tests. No text anywhere: the
      emblems are the identity.                                             */
   var CROWN = [
-    /* Bauhinia: five rounded petals around a small centre, traced as one
-       closed loop counter-clockwise so it extrudes facing outward. Each petal
-       is a lobe and each valley sits on a circle of radius 0.20, so no petal
-       can reach across its neighbour and the outline never crosses itself.
-       Stylised in the spirit of the $5, not a copy of the mint artwork. */
-    [ 0.00,  0.60], [-0.13,  0.52], [-0.19,  0.38], [-0.12,  0.24],
-    [-0.20,  0.20], [-0.38,  0.28], [-0.52,  0.20], [-0.57,  0.06],
-    [-0.48, -0.06], [-0.32, -0.06], [-0.20, -0.20], [-0.28, -0.38],
-    [-0.20, -0.52], [-0.06, -0.57], [ 0.06, -0.48], [ 0.06, -0.32],
-    [ 0.20, -0.20], [ 0.38, -0.28], [ 0.52, -0.20], [ 0.57, -0.06],
-    [ 0.48,  0.06], [ 0.32,  0.06], [ 0.20,  0.20], [ 0.28,  0.38],
-    [ 0.20,  0.52], [ 0.06,  0.57], [ 0.00,  0.60]
+    /* A crown: a band with three points, traced as one closed loop
+       counter-clockwise so it extrudes facing outward. */
+    [-0.50, -0.46], [ 0.50, -0.46], [ 0.50, -0.29],
+    [ 0.36, -0.29], [ 0.30,  0.34], [ 0.16, -0.06],
+    [ 0.00,  0.46], [-0.16, -0.06], [-0.30,  0.34],
+    [-0.36, -0.29], [-0.50, -0.29]
   ];
   var BOLT = [
-    /* junk boat as a single closed outline: a hull, with two battened sails
-       rising from its deck. One loop, so it extrudes cleanly and the
-       self-intersection test still means something. */
-    [-0.56, -0.30], [-0.30, -0.30], [-0.30,  0.34], [-0.06,  0.34],
-    [-0.06, -0.30], [ 0.06, -0.30], [ 0.06,  0.50], [ 0.34,  0.50],
-    [ 0.34, -0.30], [ 0.56, -0.30], [ 0.44, -0.46], [-0.44, -0.46],
-    [-0.56, -0.30]
+    /* The numeral "10", as struck on the HK $10 coin. Two glyphs joined by a
+       thin bridge along the baseline so the whole thing is one closed loop:
+       the bridge is invisible at coin scale, and it keeps the outline simple
+       and counter-clockwise for the tests and the extruder. */
+    /* the "1": a stem with a flag, and a foot */
+    [-0.46, -0.50], [-0.30, -0.50], [-0.30,  0.34], [-0.16,  0.46],
+    [-0.16,  0.56], [-0.46,  0.56], [-0.46,  0.46], [-0.40,  0.46],
+    [-0.40, -0.40], [-0.46, -0.40], [-0.46, -0.50],
+    /* the bridge along the baseline */
+    [-0.30, -0.50], [ 0.10, -0.50],
+    /* the "0": an outer ring and an inner ring, joined at the top */
+    [ 0.10, -0.50], [ 0.10,  0.56], [ 0.50,  0.56], [ 0.50, -0.50],
+    [ 0.10, -0.50],
+    [ 0.22, -0.38], [ 0.38, -0.38], [ 0.38,  0.44], [ 0.22,  0.44],
+    [ 0.22, -0.38]
   ];
 
   /* ---------------- geometry helpers ---------------- */
