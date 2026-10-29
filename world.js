@@ -20,7 +20,12 @@ var WORLD = (function(){
     teeth: 120,       /* the reed count on the edge                      */
     relief: 0.0075,   /* how far the emblems stand off the face          */
     rim: 0.86,        /* the raised ring, as a fraction of the radius    */
-    emblemMax: 0.72   /* every emblem point sits inside this radius      */
+    emblemMax: 0.72,  /* every emblem point sits inside this radius      */
+    /* Photographic faces. When these load, the renderers draw the real
+       struck faces instead of the procedural emblems; when they fail, the
+       CROWN/BOLT paths below are still the fallback, and the tests still
+       exercise them. Kept here so both renderers agree on the paths. */
+    photo: { heads: 'assets/heads.jpg', tails: 'assets/tails.jpg' }
   };
 
   var G = 9.81;

@@ -12,6 +12,29 @@
 var Renderer2D = (function(){
   var cv = null, g = null, W = 0, H = 0, base = 640, lastTheta = 0;
   var ready = false, W3 = null;
+  /* the photographic faces, if they load. `photoReady` gates the swap so a
+     missing file leaves the procedural emblem in place. */
+  var photo = { heads: null, tails: null };
+  var photoReady = false;
+
+  function loadPhotos(){
+    var paths = (W3 && W3.COIN && W3.COIN.photo) || null;
+    if (!paths) return;
+    var pending = 2, failed = false;
+    function one(key){
+      var img = new Image();
+      img.onload = function(){
+        photo[key] = img;
+        if (--pending === 0 && !failed) photoReady = true;
+      };
+      img.onerror = function(){
+        failed = true;
+        if (--pending === 0) photoReady = false;
+      };
+      img.src = paths[key];
+    }
+    one('heads'); one('tails');
+  }
 
   function boot(done){
     W3 = window.WORLD;
@@ -21,6 +44,7 @@ var Renderer2D = (function(){
     if (!g){ done(false); return; }
     if (document.body) document.body.classList.add('flat');
     resize();
+    loadPhotos();
     ready = true;
     done(true);
   }
@@ -209,9 +233,22 @@ var Renderer2D = (function(){
 
     medal(cx, coinY, hw, hh, flat);
     if (flat > 0.12 && hh > 2){
-      /* heads shows the Bauhinia, tails the numeral "1" — the same two paths
-         the 3D relief extrudes, so the fallback cannot disagree with it */
-      emblem(cx, coinY, hw, hw * flat, flat, c >= 0 ? W3.CROWN : W3.BOLT);
+      var heads = c >= 0;
+      var img = photoReady ? (heads ? photo.heads : photo.tails) : null;
+      if (img){
+        /* the photographic face, foreshortened by exactly the same cosine as
+           the disc, so it sits on the coin rather than floating over it */
+        g.save();
+        facePath(cx, coinY, hw * 0.86, flat);
+        g.clip();
+        var fw = hw * 1.72, fh = fw * flat;
+        g.drawImage(img, cx - fw / 2, coinY - fh / 2, fw, fh);
+        g.restore();
+      } else {
+        /* heads shows the Bauhinia, tails the numeral "1" — the same two paths
+           the 3D relief extrudes, so the fallback cannot disagree with it */
+        emblem(cx, coinY, hw, hw * flat, flat, heads ? W3.CROWN : W3.BOLT);
+      }
     }
     return true;
   }
@@ -219,7 +256,8 @@ var Renderer2D = (function(){
   function probe(){
     return { ok: ready, mode: '2d', W: W, H: H, scale: +base.toFixed(1),
              upFace3d: Math.cos(lastTheta) >= 0 ? 'heads' : 'tails',
-             upY: +Math.abs(Math.cos(lastTheta)).toFixed(4) };
+             upY: +Math.abs(Math.cos(lastTheta)).toFixed(4),
+             photo: photoReady };
   }
 
   return { boot: boot, frame: frame, resize: resize, probe: probe,

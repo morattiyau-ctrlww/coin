@@ -184,6 +184,31 @@ var Renderer3D = (function(){
   var coinG = null;                    /* the group everything hangs off   */
   var meshes = { bodies: [] };
   var matGold = null, matEdge = null, matRelief = null;
+  /* the photographic faces, if they load. `photoReady` gates the swap so a
+     missing file leaves the procedural relief in place rather than a blank
+     disc. */
+  var photoTex = { heads: null, tails: null };
+  var photoReady = false;
+  var photoFace = { heads: null, tails: null };
+
+  function loadPhotos(done){
+    var paths = (W3 && W3.COIN && W3.COIN.photo) || null;
+    if (!paths || !T || !T.TextureLoader){ done(false); return; }
+    var loader = new T.TextureLoader();
+    var pending = 2, failed = false;
+    function one(key){
+      loader.load(paths[key], function(tex){
+        tex.colorSpace = T.SRGBColorSpace;
+        tex.anisotropy = Q.aniso;
+        photoTex[key] = tex;
+        if (--pending === 0 && !failed) done(true);
+      }, undefined, function(){
+        failed = true;
+        if (--pending === 0) done(false);
+      });
+    }
+    one('heads'); one('tails');
+  }
   
   function buildCoin(){
     var r = W3.COIN.r, t = W3.COIN.thick, bev = 0.0056;
@@ -307,6 +332,29 @@ var Renderer3D = (function(){
     bolt.castShadow = true;
     coinG.add(bolt);
     meshes.bodies.push(bolt);
+
+    /* The photographic faces sit just above the struck relief, on a disc the
+       size of the field inside the raised ring. They are transparent until
+       the images load, so the procedural relief shows through in the
+       meantime — and stays as the fallback if the files are missing. */
+    var faceR = r * W3.COIN.rim * 0.985;
+    var faceGeo = new T.CircleGeometry(faceR, Math.max(64, Q.seg));
+    function faceDisc(sign){
+      var mat = new T.MeshStandardMaterial({
+        color: 0xffffff, metalness: 0.85, roughness: 0.46,
+        envMapIntensity: 0.42, transparent: true, opacity: 0,
+        depthWrite: false
+      });
+      var m = new T.Mesh(faceGeo, mat);
+      m.rotation.x = sign > 0 ? -Math.PI / 2 : Math.PI / 2;
+      m.position.y = sign * (t / 2 + W3.COIN.relief + 0.0006);
+      m.renderOrder = 2;
+      coinG.add(m);
+      meshes.bodies.push(m);
+      return m;
+    }
+    photoFace.heads = faceDisc(1);
+    photoFace.tails = faceDisc(-1);
 
     /* The stamen at the heart of the Bauhinia. A five-petal star with a bare
        centre reads as a flower only at a glance; the stamen is what makes it
@@ -719,6 +767,7 @@ var Renderer3D = (function(){
              upY: tmpUp ? +tmpUp.y.toFixed(4) : 0,
              coinY: +coinG.position.y.toFixed(4),
              samples: sampleOut,
+             photo: photoReady,
              quality: lastQuality };
   }
 
@@ -790,6 +839,18 @@ var Renderer3D = (function(){
     buildCoin();
     buildFx();
     resize();
+    /* the photos are optional: if they load, the discs fade in over the
+       procedural relief; if not, the relief stays and nothing breaks */
+    loadPhotos(function(ok){
+      if (!ok || !photoFace.heads || !photoFace.tails) return;
+      photoFace.heads.material.map = photoTex.heads;
+      photoFace.tails.material.map = photoTex.tails;
+      photoFace.heads.material.needsUpdate = true;
+      photoFace.tails.material.needsUpdate = true;
+      photoFace.heads.material.opacity = 1;
+      photoFace.tails.material.opacity = 1;
+      photoReady = true;
+    });
     frame(0.016, { st: { y: W3.COIN.thick / 2, theta: 0, yaw: 0, roll: 0,
                          aerial: false, airborne: false, t: 0, height01: 0 },
                    spin01: 0, impact: 0, clock: 0, tossId: 0, reduce: false });
