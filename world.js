@@ -78,10 +78,12 @@ var WORLD = (function(){
        at the base — no counter, so no hole, so a single path is enough.
        Traced as a single monotone CCW sweep: foot, up the stem, out to the
        flag, back down the flag's underside, then home along the foot. No
-       edge ever doubles back, so the outline cannot cross itself. */
-    [-0.34, -0.50], [ 0.10, -0.50], [ 0.10, -0.38], [-0.10, -0.38],
-    [-0.10,  0.30], [ 0.06,  0.44], [ 0.06,  0.56], [-0.34,  0.56],
-    [-0.34,  0.44], [-0.24,  0.44], [-0.24, -0.38], [-0.34, -0.38]
+       edge ever doubles back, so the outline cannot cross itself. The point
+       order is the reverse of the natural "read the glyph" order, because
+       the extruder needs a positive signed area to face outward. */
+    [-0.34, -0.38], [-0.24, -0.38], [-0.24,  0.44], [-0.34,  0.44],
+    [-0.34,  0.56], [ 0.06,  0.56], [ 0.06,  0.44], [-0.10,  0.30],
+    [-0.10, -0.38], [ 0.10, -0.38], [ 0.10, -0.50], [-0.34, -0.50]
   ];
 
   /* ---------------- geometry helpers ---------------- */
