@@ -75,10 +75,13 @@ var WORLD = (function(){
     /* The numeral "1", as struck on the HK $1 coin. One closed loop,
        counter-clockwise, so it extrudes cleanly and the self-intersection
        test still means something. A stem with a flag at the top and a foot
-       at the base — no counter, so no hole, so a single path is enough. */
-    [-0.34, -0.50], [-0.10, -0.50], [-0.10,  0.30], [ 0.06,  0.44],
-    [ 0.06,  0.56], [-0.34,  0.56], [-0.34,  0.44], [-0.24,  0.44],
-    [-0.24, -0.38], [-0.34, -0.38], [-0.34, -0.50]
+       at the base — no counter, so no hole, so a single path is enough.
+       Traced as a single monotone CCW sweep: foot, up the stem, out to the
+       flag, back down the flag's underside, then home along the foot. No
+       edge ever doubles back, so the outline cannot cross itself. */
+    [-0.34, -0.50], [ 0.10, -0.50], [ 0.10, -0.38], [-0.10, -0.38],
+    [-0.10,  0.30], [ 0.06,  0.44], [ 0.06,  0.56], [-0.34,  0.56],
+    [-0.34,  0.44], [-0.24,  0.44], [-0.24, -0.38], [-0.34, -0.38]
   ];
 
   /* ---------------- geometry helpers ---------------- */
