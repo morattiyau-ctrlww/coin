@@ -209,6 +209,8 @@ var Renderer2D = (function(){
 
     medal(cx, coinY, hw, hh, flat);
     if (flat > 0.12 && hh > 2){
+      /* heads shows the Bauhinia, tails the numeral "1" — the same two paths
+         the 3D relief extrudes, so the fallback cannot disagree with it */
       emblem(cx, coinY, hw, hw * flat, flat, c >= 0 ? W3.CROWN : W3.BOLT);
     }
     return true;

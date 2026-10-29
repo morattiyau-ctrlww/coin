@@ -308,19 +308,21 @@ var Renderer3D = (function(){
     coinG.add(bolt);
     meshes.bodies.push(bolt);
 
-    /* The pearls on the crown's points. A crown with three bare triangles reads
-       as a castle; the pearls are what make it read as a crown, and they cost
-       one instanced draw call. */
+    /* The stamen at the heart of the Bauhinia. A five-petal star with a bare
+       centre reads as a flower only at a glance; the stamen is what makes it
+       read as the Bauhinia, and it costs one instanced draw call. */
     var pearls = new T.InstancedMesh(
-      new T.SphereGeometry(r * 0.052, 12, 8), matRelief, 3);
+      new T.SphereGeometry(r * 0.045, 12, 8), matRelief, 5);
     var pm = new T.Matrix4(), pq = new T.Quaternion(), pv = new T.Vector3();
     var one = new T.Vector3(1, 1, 1);
     pq.setFromAxisAngle(new T.Vector3(1, 0, 0), 0);
-    [[-0.30, 0.42], [0.00, 0.545], [0.30, 0.42]].forEach(function(pt, i){
-      pv.set(pt[0] * r, t / 2 + W3.COIN.relief * 0.55, -pt[1] * r);
+    for (var pi = 0; pi < 5; pi++){
+      var pa = (pi / 5) * Math.PI * 2 - Math.PI / 2;
+      pv.set(Math.cos(pa) * r * 0.10, t / 2 + W3.COIN.relief * 0.55,
+             -Math.sin(pa) * r * 0.10);
       pm.compose(pv, pq, one);
-      pearls.setMatrixAt(i, pm);
-    });
+      pearls.setMatrixAt(pi, pm);
+    }
     pearls.instanceMatrix.needsUpdate = true;
     pearls.castShadow = true;
     coinG.add(pearls);

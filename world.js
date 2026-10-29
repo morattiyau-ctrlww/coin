@@ -53,31 +53,32 @@ var WORLD = (function(){
   /* ---------------- the emblems ----------------
      Plain 2D paths in face units (the face is a disc of radius 1), shared by
      the WebGL relief, the flat fallback and the tests. No text anywhere: the
-     emblems are the identity.                                             */
+     emblems are the identity. CROWN is the Bauhinia (heads), BOLT is the
+     numeral "1" (tails) — the two faces of the HK $1 coin.                */
   var CROWN = [
-    /* A crown: a band with three points, traced as one closed loop
-       counter-clockwise so it extrudes facing outward. */
-    [-0.50, -0.46], [ 0.50, -0.46], [ 0.50, -0.29],
-    [ 0.36, -0.29], [ 0.30,  0.34], [ 0.16, -0.06],
-    [ 0.00,  0.46], [-0.16, -0.06], [-0.30,  0.34],
-    [-0.36, -0.29], [-0.50, -0.29]
+    /* The Bauhinia, as struck on the HK $1 coin: five petals around a
+       centre, traced as one closed loop counter-clockwise so it extrudes
+       facing outward. A real Bauhinia has notched petals and a stamen, but
+       this single-path model cannot express a hole or a self-intersection,
+       so the silhouette is simplified to a five-pointed star of petals —
+       star-shaped about the origin, every point inside emblemMax, and
+       therefore guaranteed simple and CCW. The detail lives in the relief
+       and the 2D fallback, not in the outline. */
+    [ 0.00,  0.66], [ 0.10,  0.30], [ 0.42,  0.50],
+    [ 0.26,  0.16], [ 0.62,  0.10], [ 0.26, -0.06],
+    [ 0.40, -0.42], [ 0.06, -0.22], [ 0.00, -0.62],
+    [-0.06, -0.22], [-0.40, -0.42], [-0.26, -0.06],
+    [-0.62,  0.10], [-0.26,  0.16], [-0.42,  0.50],
+    [-0.10,  0.30]
   ];
   var BOLT = [
-    /* The numeral "10", as struck on the HK $10 coin. One closed loop,
+    /* The numeral "1", as struck on the HK $1 coin. One closed loop,
        counter-clockwise, so it extrudes cleanly and the self-intersection
-       test still means something. The "0" is a solid rounded blob with a
-       notch cut in from the top: a true ring needs a hole, and a hole needs
-       a second loop, which this single-path model cannot express. */
-    /* the "1": a stem with a flag, and a foot */
-    [-0.46, -0.50], [-0.30, -0.50], [-0.30,  0.34], [-0.16,  0.46],
-    [-0.16,  0.56], [-0.46,  0.56], [-0.46,  0.46], [-0.40,  0.46],
-    [-0.40, -0.40], [-0.46, -0.40], [-0.46, -0.50],
-    /* the bridge along the baseline, joining the two glyphs */
-    [-0.30, -0.50], [ 0.10, -0.50],
-    /* the "0": a rounded blob, with a notch cut down from the top */
-    [ 0.10, -0.50], [ 0.10,  0.56], [ 0.24,  0.56], [ 0.24,  0.30],
-    [ 0.36,  0.30], [ 0.36,  0.56], [ 0.50,  0.56], [ 0.50, -0.50],
-    [ 0.10, -0.50]
+       test still means something. A stem with a flag at the top and a foot
+       at the base — no counter, so no hole, so a single path is enough. */
+    [-0.34, -0.50], [-0.10, -0.50], [-0.10,  0.30], [ 0.06,  0.44],
+    [ 0.06,  0.56], [-0.34,  0.56], [-0.34,  0.44], [-0.24,  0.44],
+    [-0.24, -0.38], [-0.34, -0.38], [-0.34, -0.50]
   ];
 
   /* ---------------- geometry helpers ---------------- */

@@ -503,10 +503,10 @@ var APP = (function(){
     if (el.best) el.best.textContent = s.best;
     var pct = s.total ? s.headsPct * 100 : 50;
     if (el.bar) el.bar.style.width = pct.toFixed(1) + '%';
-    if (el.capHeads) el.capHeads.textContent = 'crown ' + Math.round(pct) + '%';
-    if (el.capTails) el.capTails.textContent = 'bolt ' + Math.round(100 - pct) + '%';
+    if (el.capHeads) el.capHeads.textContent = 'bauhinia ' + Math.round(pct) + '%';
+    if (el.capTails) el.capTails.textContent = 'one ' + Math.round(100 - pct) + '%';
     if (el.split) el.split.setAttribute('aria-label',
-      'Crown has come up ' + s.heads + ' times and bolt ' + s.tails +
+      'Bauhinia has come up ' + s.heads + ' times and one ' + s.tails +
       ' times, out of ' + s.total + ' flips.');
     if (el.history){
       el.history.innerHTML = '';
@@ -519,7 +519,7 @@ var APP = (function(){
         s.list.forEach(function(r){
           var li = document.createElement('li');
           li.className = (r === 'heads') ? 'crown' : 'bolt';
-          li.textContent = (r === 'heads') ? 'crown' : 'bolt';
+          li.textContent = (r === 'heads') ? 'bauhinia' : 'one';
           el.history.appendChild(li);
         });
       }
@@ -528,7 +528,7 @@ var APP = (function(){
 
   function showVerdict(result, stats){
     if (!el.verdict) return;
-    var word = (result === 'heads') ? 'crown' : 'bolt';
+    var word = (result === 'heads') ? 'bauhinia' : 'one';
     var sub = '';
     if (stats.streak > 1) sub = stats.streak + ' in a row';
     else sub = 'flip ' + stats.total;
