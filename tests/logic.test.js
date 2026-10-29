@@ -232,7 +232,7 @@ section('8. the coin itself is a coin');
 section('9. the rules are fair, and provably so');
 {
   var b = [0, 0], N = 200000;
-  for (var i = 0; i < N; i++) b[RULES.fairBit()]++;
+  for (var i = 0; i < N; i++) b[RULES.randomSide() ? 1 : 0]++;
   var dev = Math.abs(b[0] - b[1]) / N;
   ok(dev < 0.01, 'the bit is even over ' + N + ' draws',
      dev.toFixed(5) + ' deviation');
@@ -311,6 +311,35 @@ section('12. the audio graph is safe to fire all at once');
   ['sfx', 'room', 'ui'].forEach(function(b2){
     ok(AUDIO.buses[b2] > 0 && AUDIO.buses[b2] <= 1, 'bus ' + b2 + ' is sane');
   });
+}
+
+section('14. the flip is decided fresh, and fairly, on every call');
+{
+  /* The bug this guards against: a result computed once and reused, or a
+     seeded PRNG re-seeded per flip, which makes the coin look rigged. The
+     real deciding function is RULES.flip(), so that is what is exercised. */
+  var N = 20000, heads = 0, tails = 0, first = RULES.flip(), changed = false;
+  for (var i = 0; i < N; i++){
+    var r = RULES.flip();
+    if (r === 'heads') heads++;
+    else if (r === 'tails') tails++;
+    if (r !== first) changed = true;
+  }
+  ok(heads + tails === N, 'every call returns a real face',
+     heads + ' heads, ' + tails + ' tails');
+  ok(heads > 0 && tails > 0, 'both faces appear over ' + N + ' flips',
+     heads + '/' + tails);
+  var pct = heads / N;
+  ok(pct >= 0.45 && pct <= 0.55, 'the split is roughly 50/50',
+     (pct * 100).toFixed(2) + '% heads');
+  ok(changed, 'the function is not returning a cached constant');
+
+  /* and the helper underneath is unbiased too, not just the wrapper */
+  var hb = 0, M = 20000;
+  for (var j = 0; j < M; j++) if (RULES.randomSide()) hb++;
+  var pb = hb / M;
+  ok(pb >= 0.45 && pb <= 0.55, 'randomSide() is unbiased over ' + M + ' draws',
+     (pb * 100).toFixed(2) + '% true');
 }
 
 section('13. every sound still works with no audio hardware at all');

@@ -17,21 +17,28 @@ var RULES = (function(){
   var KEEP = 40;                       /* how many flips we remember         */
   var SHOW = 5;                        /* how many the HUD lists             */
 
-  /* An exactly fair bit. A byte has 256 equally likely values, so masking the
-     low bit splits them 128/128 with no modulo bias — this is the difference
-     between "random" and "fair", and it is why the odds can be shown honestly. */
-  function fairBit(){
-    if (typeof crypto !== 'undefined' && crypto.getRandomValues){
-      return crypto.getRandomValues(new Uint8Array(1))[0] & 1;
+  /* An unbiased 50/50 coin. A 32-bit draw masked to its low bit is exactly
+     even (2^32 is a multiple of 2), so there is no modulo bias — this is the
+     difference between "random" and "fair", and it is why the odds can be
+     shown honestly. `globalThis.crypto` is used so the same helper works in
+     the browser and in node, where the tests run. */
+  function randomSide(){
+    var g = (typeof globalThis !== 'undefined' && globalThis.crypto) ||
+            (typeof window !== 'undefined' && window.crypto) || null;
+    if (g && g.getRandomValues){
+      var a = new Uint32Array(1);
+      g.getRandomValues(a);
+      return (a[0] & 1) === 0;          /* true = heads, false = tails */
     }
-    /* no crypto: fall back, and say so rather than pretending */
-    return (Math.random() < 0.5) ? 0 : 1;
+    return Math.random() < 0.5;
   }
 
-  /* 1 -> tails, 0 -> heads (the bit is the parity of the half-turn count) */
+  /* The one place a flip is decided. Called fresh on every flip — never
+     cached, never seeded, never reused. `bit` is only for the tests, which
+     pin a known outcome; the app always calls it with no argument. */
   function flip(bit){
-    var b = (bit === undefined) ? fairBit() : (bit ? 1 : 0);
-    return b ? 'tails' : 'heads';
+    var heads = (bit === undefined) ? randomSide() : !bit;
+    return heads ? 'heads' : 'tails';
   }
 
   function emptyStore(){
@@ -92,7 +99,7 @@ var RULES = (function(){
 
   return { HISTORY_KEY: HISTORY_KEY, LEGACY_KEY: LEGACY_KEY,
            KEEP: KEEP, SHOW: SHOW,
-           fairBit: fairBit, flip: flip, emptyStore: emptyStore,
+           randomSide: randomSide, flip: flip, emptyStore: emptyStore,
            record: record, stats: stats, migrate: migrate };
 })();
 
@@ -552,9 +559,11 @@ var APP = (function(){
 
   function flip(){
     if (S.phase === 'tossing') return;
-    /* the rules decide first. Everything after this is the throw being solved
-       to land on what was already decided. */
-    S.result = S.capture ? (rng() < 0.5 ? 'heads' : 'tails') : RULES.flip();
+    /* The rules decide first, freshly, on every flip. This is the *only*
+       place the official result is chosen: capture mode may seed the
+       animation, but it must never seed the outcome, or a screenshot run
+       would look like a coin that always lands the same way. */
+    S.result = RULES.flip();
     S.toss = WORLD.toss(S.result, rng);
     S.t = 0;
     S.tossId++;
@@ -776,6 +785,9 @@ var APP = (function(){
 
   function capture(mode){
     S.capture = mode;
+    /* The seed only drives the *animation* (airtime, spin, wobble), so a
+       capture is reproducible. It deliberately does not touch the result:
+       APP.flip() always calls RULES.flip(), which draws from crypto. */
     var sm = /seed=(\d+)/.exec((location.hash || '') + (location.search || ''));
     rng = seedRng(sm ? parseInt(sm[1], 10) : 20260101);
     if (mode === 'help'){
@@ -839,7 +851,7 @@ var APP = (function(){
     }
     if (mode === 'result'){
       if (S.phase === 'tossing') runUntil(WORLD.totalTime(S.toss));
-      var want = flip();
+      flip();
       runUntil(WORLD.totalTime(S.toss) + 1.6);
       sampleCoin();
       return report(hud());
